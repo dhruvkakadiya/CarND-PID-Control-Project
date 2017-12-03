@@ -6,7 +6,7 @@ Self-Driving Car Engineer Nanodegree Program
 ## Project Summary
 I implemented a PID controller in C++ to keep a car stay on track. Thec controller outputs steering angle and throttle value using cross track error, driving angle, and driving speed as input. 
 
-In the following output demod, the car can reach as fast as 80 mph.
+In the following output demod, the car can reach as fast as 30 mph.
 
 ![final](./gif/full_lap.gif) 
 
