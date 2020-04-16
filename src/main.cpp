@@ -43,9 +43,10 @@ int main() {
   using std::string;
 
   uWS::Hub h;
+  const bool forward_direction = true;
 
-  PID pid_steer(0.15, 0, -3);
-  PID pid_throttle(-0.5, 0, 0);
+  PID pid_steer(0.2, 0.0002, 8.0);
+  PID pid_throttle(0.5, 0.0002, 3.0);
 
   h.onMessage([&pid_steer, &pid_throttle](uWS::WebSocket<uWS::SERVER> ws,
                                           char *data, size_t length,
@@ -80,6 +81,9 @@ int main() {
           else
             speed_target = max_speed;
 
+          /* Setting minimum speed */
+          speed_target = std::max(10.0, speed_target);
+
           auto speed_e = speed - speed_target;
 
           /**
@@ -89,15 +93,24 @@ int main() {
           pid_steer.UpdateError(cte);
           auto steer_value = pid_steer.TotalError();
           /* Steering value is [-1, 1] */
-          steer_value =
-              (steer_value > 1) ? 1 : ((steer_value < -1) ? -1 : steer_value);
+          steer_value = (steer_value > 1.0)
+                            ? 1.0
+                            : ((steer_value < -1.0) ? -1.0 : steer_value);
 
           pid_throttle.UpdateError(speed_e);
           auto throttle_value = pid_throttle.TotalError();
+          if (throttle_value >= 0 && throttle_value < 10.0)
+            throttle_value = 10.0;
+          else if (throttle_value < 0 && throttle_value > -10.0)
+            throttle_value = -10.0;
 
           // DEBUG
-          std::cout << "CTE: " << cte << " Steering Value: " << steer_value
-                    << std::endl;
+          std::cout << "CTE: " << cte << "\n";
+
+          if (!forward_direction)
+            throttle_value = -throttle_value;
+          else
+            throttle_value = std::max(0.0, throttle_value);
 
           json msgJson;
           msgJson["steering_angle"] = steer_value;

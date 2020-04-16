@@ -40,8 +40,6 @@ class PID {
   double Kp{0};
   double Ki{0};
   double Kd{0};
-
-  double cte_last{0};
 };
 
 #endif  // PID_HPP
