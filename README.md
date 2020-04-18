@@ -3,6 +3,15 @@ Self-Driving Car Engineer Nanodegree Program
 
 ---
 
+## Project Summary
+Implemented a PID controller in C++ to keep a car stay on track. It is controlling steering angle and throttle values by using cross track error, driving angle, and driving speed as input.
+
+In the following demo, the car can reach as fast as 50 mph.
+
+![forward_final_lap_part1](./gif/forward_final_lap_part1.gif)
+![forward_final_lap_part2](./gif/forward_final_lap_part2.gif)
+
+
 ## Dependencies
 
 * cmake >= 3.15
